@@ -1,4 +1,67 @@
-source .venv/bin/activate
+#!/bin/bash -e
+
+# Usage: [ADDRESS=<IP>] [HTTP_PORT=<port>] [HTTPS_PORT=<port>] source labrc [project]
+# Where variables:
+#   ADDRESS=<IP> - an address which is used to publish the fuel-devops-portal
+#                  container's ports, '0.0.0.0' by default
+#   HTTP_PORT=<port> - a non-secure port which is used to publish the port '80'
+#                      of the fuel-devops-portal container, '80' by default
+#   HTTPS_PORT=<port> - a secure port which is used to publish the port '443'
+#                       of the fuel-devops-portal container, '443' by default
+# Where options:
+#   project - an identifier to distinguish multiple deployments,
+#             'oss' is set by default
+# Description:
+#   This script exports a set of environment variables which are required for
+#   docker-compose configuration files, such as docker-compose.yml and
+#   infra-compose.yaml. These variables add an ability to dynemically configure
+#   deployments up to run several deployment with different configuration files
+#   and tags.
+# Examples:
+#  1) To set default values, configuration files will be used from the 'oss'
+#     project and the portal will listen on 0.0.0.0:80 and 0.0.0.0:443:
+#
+#         $ source labrc
+#
+#  2) Set alternative address for the devops-portal:
+#
+#         $ ADDRESS=10.20.0.38 source labrc
+#
+#  3) Set alternative ports for the devops-portal:
+#
+#         $ HTTP_PORT=8000 HTTPS_PORT=8443 source labrc
+#
+#  4) Use alternative set of configuration files to run the devops-portal:
+#
+#         $ source labrc dev-0
+#
+#     NOTE: Before to use alternative configs, you have to create them:
+#
+#         $ ./scripts/configure.sh dev-0
+
+# Load the virtual environment if exists
+LABRC_VENV="$PWD/.venv/bin/activate"
+if [[ -r $LABRC_VENV ]]; then
+    source $LABRC_VENV
+fi
+
 export PROJECT=${1:-oss}
 export DIR="$PWD/projects/$PROJECT"
 export COMPOSE_PROJECT_NAME=$PROJECT
+
+# Load previous custom variables for the project if exist
+LABRC_PROJECT_VARS="$DIR/.env"
+if [[ -r $LABRC_PROJECT_VARS ]]; then
+    source $LABRC_PROJECT_VARS
+fi
+
+export PORTAL_ADDRESS=${ADDRESS:-${LABRC_ADDRESS:-0.0.0.0}}
+export PORTAL_HTTP_PORT=${HTTP_PORT:-${LABRC_HTTP_PORT:-80}}
+export PORTAL_HTTPS_PORT=${HTTPS_PORT:-${LABRC_HTTPS_PORT:-443}}
+
+# Save custom parameters for the projects
+cat > $LABRC_PROJECT_VARS <<EOF
+LABRC_ADDRESS=$PORTAL_ADDRESS
+LABRC_HTTP_PORT=$PORTAL_HTTP_PORT
+LABRC_HTTPS_PORT=$PORTAL_HTTPS_PORT
+EOF

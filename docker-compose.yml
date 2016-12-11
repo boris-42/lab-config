@@ -57,8 +57,8 @@ services:
         volumes:
          - ${DIR}/configs/nginx:/etc/nginx/conf.d/:ro
         ports:
-         - "${PORTAL_HTTP_PORT:-80}:80"
-         - "${PORTAL_HTTPS_PORT:-443}:443"
+         - "${PORTAL_ADDRESS:-0.0.0.0}:${PORTAL_HTTP_PORT:-80}:80"
+         - "${PORTAL_ADDRESS:-0.0.0.0}:${PORTAL_HTTPS_PORT:-443}:443"
         networks:
          - oss-net
         restart: always

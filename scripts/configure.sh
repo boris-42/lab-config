@@ -12,7 +12,7 @@ function usage {
 project="oss"
 variables="$cwd/variables"
 
-while getopts ":p:f:" opt; do
+while getopts "p:f:" opt; do
     case $opt in
         "p" )
             project="$OPTARG"
