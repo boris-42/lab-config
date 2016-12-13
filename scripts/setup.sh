@@ -1,12 +1,11 @@
 #!/bin/bash -e
 
-cwd="$(dirname $0)"
-venv="$cwd/.venv"
+cwd="$(dirname $0)/.."
 codename="$(lsb_release --short --codename)"
 username="$(id --user --name)"
 
 # Configure host parameters
-cat "$cwd/files/sysctl.conf" | sudo tee /etc/sysctl.d/60-oss_lab.conf
+cat "$cwd/scripts/files/sysctl.conf" | sudo tee /etc/sysctl.d/60-oss_lab.conf
 sudo sysctl --system
 
 # Install docker
@@ -26,5 +25,4 @@ sudo apt-get update \
 sudo usermod -aG docker $username
 
 # Install docker-compose in virtualenv
-virtualenv "$venv"
-"$venv/bin/pip" install docker-compose==1.9.0
+$cwd/scripts/install.sh

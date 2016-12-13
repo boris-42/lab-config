@@ -1,6 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
-cwd="$(dirname $0)"
+cwd="$(dirname $0)/.."
 
 function usage {
     local base_name=$(basename $0)
@@ -12,7 +12,7 @@ function usage {
 project="oss"
 variables="$cwd/variables"
 
-while getopts ":p:f:" opt; do
+while getopts "p:f:" opt; do
     case $opt in
         "p" )
             project="$OPTARG"
@@ -27,7 +27,6 @@ while getopts ":p:f:" opt; do
     esac
 done
 
-source_configs="$cwd/configs"
 project_dir="$cwd/projects/$project"
 replaces="$project_dir/.variables"
 
@@ -37,7 +36,7 @@ mkdir -p "$project_dir/data"
 cat $variables | sed -r 's,([^=]+)=(.*),s|\1|\2|g,g' > $replaces
 
 pushd $cwd > /dev/null
-    configs="$(find $source_configs -type f -not -path '*/\.*')"
+    configs="$(find configs -type f -not -path '*/\.*')"
 popd > /dev/null
 
 for conf in $configs; do
