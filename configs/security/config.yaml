@@ -1,0 +1,19 @@
+regions:
+  - type: openstack
+    name: lab1
+    credentials:
+      auth_url: https://OPENSTACK_IP:5000/v2.0/
+      username: OPENSTACK_USERNAME
+      password: OPENSTACK_PASSWORD
+      tenant_name: OPENSTACK_TENANT_NAME
+
+plugins:
+  - module: security.plugins.secgroup
+    checkEveryMinutes: 1
+    regions:
+      - lab1
+
+elastic:
+  hosts:
+    - host: elasticsearch
+      port: 9200

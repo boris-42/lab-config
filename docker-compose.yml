@@ -19,6 +19,15 @@ services:
         networks:
          - oss-net
         restart: always
+    security-checker:
+        image: seecloud/security:${TAG:-latest}
+        volumes:
+         - ${DIR}/configs/security:/etc/oss/security:ro
+        entrypoint:
+         - security-checker --config-file /etc/oss/security/config.yaml
+        networks:
+         - oss-net
+        restart: always
     # apis
     availability-api:
         image: seecloud/availability:${TAG:-latest}
@@ -41,6 +50,15 @@ services:
             oss-net:
                 aliases:
                     - health-api
+        restart: always
+    security-api:
+        image: seecloud/security:${TAG:-latest}
+        volumes:
+         - ${DIR}/configs/security:/etc/oss/security:ro
+        entrypoint:
+         - security-api --config-file /etc/oss/security/config.yaml
+        networks:
+         - oss-net
         restart: always
     ceagle:
         image: seecloud/ceagle:${TAG:-latest}
