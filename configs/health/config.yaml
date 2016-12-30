@@ -1,0 +1,9 @@
+sources:
+  - region: cz-1.lab
+    driver:
+      type: tcp
+      elastic_src: http://ELASTICSEARCH_LOGS_IP:9200/log*/message
+backend:
+  elastic: http://elasticsearch:9200
+config:
+  run_every_minutes: 2
