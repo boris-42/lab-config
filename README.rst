@@ -119,17 +119,18 @@ The usage of `labrc` looks like:
 
     ::
 
-      [ADDRESS=<IP>] [HTTP_PORT=<port>] [HTTPS_PORT=<port>] source labrc
+      [ADDRESS=<IP>] [HTTP_PORT=<port>] [HTTPS_PORT=<port>] [SUBNET=<subnet>] source labrc
 
 The list of supported parameters:
 
-===========  =============
+===========  ==============
 Parameter    Default Value
-===========  =============
+===========  ==============
 ADDRESS      0.0.0.0
 HTTP_PORT    80
 HTTPS_PORT   443
-===========  =============
+SUBNET       10.123.10.0/24
+===========  ==============
 
 For example, to change default ports:
 

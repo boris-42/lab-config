@@ -12,3 +12,6 @@ services:
 networks:
     oss-net:
         driver: bridge
+        ipam:
+            config:
+              - subnet: ${PROJECT_SUBNET:-10.123.10.0/24}
