@@ -1,17 +1,19 @@
 regions:
   - type: openstack
-    name: lab1
+    name: cz-1.lab
     credentials:
       auth_url: https://OPENSTACK_IP:5000/v2.0/
       username: OPENSTACK_USERNAME
       password: OPENSTACK_PASSWORD
       tenant_name: OPENSTACK_TENANT_NAME
+    insecure: true
+    endpoint_override: https://OPENSTACK_IP:9696/
 
 plugins:
   - module: security.plugins.secgroup
     checkEveryMinutes: 1
     regions:
-      - lab1
+      - cz-1.lab
 
 elastic:
   hosts:

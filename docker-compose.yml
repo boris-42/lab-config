@@ -24,7 +24,9 @@ services:
         volumes:
          - ${DIR}/configs/security:/etc/oss/security:ro
         entrypoint:
-         - security-checker --config-file /etc/oss/security/config.yaml
+         - security-checker
+         - --config-file
+         - /etc/oss/security/config.yaml
         networks:
          - oss-net
         restart: always
@@ -55,8 +57,10 @@ services:
         image: seecloud/security:${TAG:-latest}
         volumes:
          - ${DIR}/configs/security:/etc/oss/security:ro
+        environment:
+         - SECURITY_CONF=/etc/oss/security/config.yaml
         entrypoint:
-         - security-api --config-file /etc/oss/security/config.yaml
+         - ./entrypoint-api.sh
         networks:
          - oss-net
         restart: always
