@@ -6,6 +6,8 @@ regions:
       username: OPENSTACK_USERNAME
       password: OPENSTACK_PASSWORD
       tenant_name: OPENSTACK_TENANT_NAME
+    insecure: true
+    endpoint_override: https://OPENSTACK_IP:9696/
 
 plugins:
   - module: security.plugins.secgroup
