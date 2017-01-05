@@ -1,0 +1,5 @@
+use_fake_api_data: False
+services:
+  health: http://health-api:5000
+  availability: http://availability-api:5000
+  security: http://security-api:5000
